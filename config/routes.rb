@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'sessions/create'
+  scope '/' do
+    post 'login', to: 'sessions#create'
+  end
   resources :users do
     get 'recipes', to: "users#recipes_index"
   end
