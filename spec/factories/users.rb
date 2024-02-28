@@ -3,6 +3,7 @@ FactoryBot.define do
     email { "MyString" }
     first_name { "MyString" }
     last_name { "MyString" }
-    password_digest { "MyString" }
+    password { "MyString" }
+    password_confirmation { "MyString" }
   end
 end

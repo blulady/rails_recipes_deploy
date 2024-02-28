@@ -1,5 +1,6 @@
 class RecipeIngredientsController < ApplicationController
     before_action :set_recipe_ingredient, only: [ :update, :destroy, :show]
+    before_action :authenticate_request, only: [ :update, :destroy, :create]
   
     def index
       recipe_ingredients = RecipeIngredient.all 

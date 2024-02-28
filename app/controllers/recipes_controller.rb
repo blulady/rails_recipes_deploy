@@ -1,11 +1,12 @@
 class RecipesController < ApplicationController
     before_action :set_recipe, only: [ :update, :destroy, :show]
     before_action :set_recipe2, only: [ :ingredients_index, :ingredients_and_amounts_index, :reviews_index, :categories_index]
+    before_action :authenticate_request, only: [:create, :update, :destroy]
 
     def index
       recipes = Recipe.all 
   
-      render json: recipes, status: 200
+      render json: RecipeBlueprint.render(recipes, view: :normal), status: 200
     end
   
     def show

@@ -1,5 +1,6 @@
 class MeasurementsController < ApplicationController
     before_action :set_measurement, only: [ :update, :destroy, :show]
+    before_action :authenticate_request, only: [:create, :update, :destroy]
   
     def index
       measurements = Measurement.all 

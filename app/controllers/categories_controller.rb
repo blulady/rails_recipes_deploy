@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
     before_action :set_category, only: [ :update, :destroy, :show]
+    before_action :authenticate_request, only: [ :create, :update, :destroy]
   
     def index
       categories = Category.all 

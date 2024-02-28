@@ -1,5 +1,6 @@
 class ReviewsController < ApplicationController
     before_action :set_review, only: [ :update, :destroy, :show]
+    before_action :authenticate_request, only: [ :update, :destroy, :create]
   
     def index
       reviews = Review.all 
@@ -13,7 +14,8 @@ class ReviewsController < ApplicationController
     end
   
     def create
-      review = Review.new(review_params)
+      review = @current_user.reviews.new(review_params)
+      review.date = DateTime.now
       if review.save
         render json: review, status: :created
       else
@@ -41,7 +43,7 @@ class ReviewsController < ApplicationController
     private
   
     def review_params
-      params.permit(:comment, :rating, :date, :recipe_id, :user_id)
+      params.require(:review).permit(:comment, :rating, :date, :recipe_id)
     end
   
     def set_review
