@@ -5,8 +5,12 @@ class RecipesController < ApplicationController
 
     def index
       recipes = Recipe.all 
-  
-      render json: RecipeBlueprint.render(recipes, view: :normal), status: 200
+      if recipes
+        render json: recipes, status: :ok
+      else
+        render json: recipes.errors, status: :unprocessable_entity
+      end
+      # render json: RecipeBlueprint.render(recipes, view: :normal), status: 200
     end
   
     def show
