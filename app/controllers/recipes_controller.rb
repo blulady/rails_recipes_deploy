@@ -4,13 +4,9 @@ class RecipesController < ApplicationController
     before_action :authenticate_request, only: [:create, :update, :destroy]
 
     def index
-      recipes = Recipe.all 
-      if recipes
-        render json: recipes, status: :ok
-      else
-        render json: recipes.errors, status: :unprocessable_entity
-      end
-      # render json: RecipeBlueprint.render(recipes, view: :normal), status: 200
+      recipes = Recipe.all.sort_by(&:average_review).reverse
+      paginated_recipes = Kaminari.paginate_array(recipes).page(params[:page]).per(7)
+      render json: RecipeBlueprint.render_as_json(paginated_recipes, view: :normal), status: 200
     end
   
     def show

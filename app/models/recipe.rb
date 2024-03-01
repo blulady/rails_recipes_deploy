@@ -6,4 +6,8 @@ class Recipe < ApplicationRecord
     has_many :recipe_ingredients
     has_many :ingredients, through: :recipe_ingredients
     has_many :reviews
+
+    def average_review
+        reviews.average(:rating) || 0
+    end
 end
