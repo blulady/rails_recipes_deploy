@@ -4,9 +4,12 @@ class RecipesController < ApplicationController
     before_action :authenticate_request, only: [:create, :update, :destroy]
 
     def index
-      recipes = Recipe.all.sort_by(&:average_review).reverse
-      paginated_recipes = Kaminari.paginate_array(recipes).page(params[:page]).per(7)
-      render json: RecipeBlueprint.render_as_json(paginated_recipes, view: :normal), status: 200
+      recipes = Recipe.left_joins(:reviews)
+                  .select('recipes.*, AVG(reviews.rating) as average_review')
+                  .group('recipes.id')
+                  .order('average_review DESC')
+                  .page(params[:page]).per(7)
+      render json: RecipeBlueprint.render_as_json(recipes, view: :normal), status: 200
     end
   
     def show
