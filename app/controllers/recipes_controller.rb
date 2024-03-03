@@ -9,7 +9,12 @@ class RecipesController < ApplicationController
                   .group('recipes.id')
                   .order('average_review DESC')
                   .page(params[:page]).per(7)
-      render json: RecipeBlueprint.render_as_json(recipes, view: :normal), status: 200
+      total_pages = recipes.total_pages
+      current_page = recipes.current_page
+
+      render json: { recipes: RecipeBlueprint.render_as_json(recipes, view: :normal),
+       total_pages: total_pages, current_page: current_page}, status: 200
+  
     end
   
     def show
